@@ -28,6 +28,7 @@ RUN dnf update -y \
   && dnf install unzip epel-release mysql-community-client -y \
   && dnf install icu -y \
   && dnf install fluent-bit --nobest -y \
+  && dnf install -y python3 \
   && dnf -y clean all \
   && rm -rf /var/cache && rm mysql84-community-release-el9-1.noarch.rpm
 
