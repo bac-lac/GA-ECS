@@ -133,20 +133,20 @@ resource "aws_cloudwatch_metric_alarm" "ga_cw_ecs_storage_alarm" {
 
 }
 
-resource "aws_cloudwatch_metric_alarm" "ga_cw_nlb_22_alarm" {
-  alarm_name                = "${var.ENV} - NLB port 22 (SFTP) unhealthy host"
+resource "aws_cloudwatch_metric_alarm" "ga_cw_nlb_8022_alarm" {
+  alarm_name                = "${var.ENV} - NLB port 8022 (SFTP) unhealthy host"
   comparison_operator       = "LessThanThreshold"
   alarm_actions             = [aws_sns_topic.ga_sns_topic.arn]
   metric_name               = "HealthyHostCount"
   namespace                 = "AWS/NetworkELB"
   statistic                 = "Minimum"
-  dimensions                = zipmap(["TargetGroup", "LoadBalancer"], [aws_lb_target_group.ga_tg_22.arn_suffix, data.aws_lb.ga_nlb.arn_suffix])
+  dimensions                = zipmap(["TargetGroup", "LoadBalancer"], [aws_lb_target_group.ga_tg_8022.arn_suffix, data.aws_lb.ga_nlb.arn_suffix])
   period                    = 60
   evaluation_periods        = 5
   datapoints_to_alarm       = 5
   threshold                 = 1
   treat_missing_data        = "missing"
-  alarm_description         = "This metric monitors NLB port 22 (SFTP) ${var.ENV} health"
+  alarm_description         = "This metric monitors NLB port 8022 (SFTP) ${var.ENV} health"
 }
 
 resource "aws_cloudwatch_metric_alarm" "ga_cw_alb_8001_alarm" {
@@ -165,20 +165,20 @@ resource "aws_cloudwatch_metric_alarm" "ga_cw_alb_8001_alarm" {
   alarm_description         = "This metric monitors ALB port 8001 (admin portal) ${var.ENV} health"
 }
 
-resource "aws_cloudwatch_metric_alarm" "ga_cw_alb_443_alarm" {
-  alarm_name                = "${var.ENV} - ALB port 443 (web client) unhealthy host"
+resource "aws_cloudwatch_metric_alarm" "ga_cw_alb_8443_alarm" {
+  alarm_name                = "${var.ENV} - ALB port 8443 (web client) unhealthy host"
   comparison_operator       = "LessThanThreshold"
   alarm_actions             = [aws_sns_topic.ga_sns_topic.arn]
   metric_name               = "HealthyHostCount"
   namespace                 = "AWS/ApplicationELB"
   statistic                 = "Minimum"
-  dimensions                = zipmap(["TargetGroup", "LoadBalancer"], [aws_lb_target_group.ga_tg_443.arn_suffix, data.aws_lb.ga_alb.arn_suffix])
+  dimensions                = zipmap(["TargetGroup", "LoadBalancer"], [aws_lb_target_group.ga_tg_8443.arn_suffix, data.aws_lb.ga_alb.arn_suffix])
   period                    = 60
   evaluation_periods        = 5
   datapoints_to_alarm       = 5
   threshold                 = 1
   treat_missing_data        = "missing"
-  alarm_description         = "This metric monitors ALB port 443 (web client) ${var.ENV} health"
+  alarm_description         = "This metric monitors ALB port 8443 (web client) ${var.ENV} health"
 }
 
 resource "aws_cloudwatch_metric_alarm" "ga_cw_nlb_8009_alarm" {
