@@ -120,7 +120,7 @@ resource "aws_lb_listener" "sftp" {
   protocol            = "TCP"
   default_action {
     type              = "forward"
-    target_group_arn  = aws_lb_target_group.ga_tg_22.arn
+    target_group_arn  = aws_lb_target_group.ga_tg_8022.arn
   }
   tags = {
     Name = "SFTP-${var.ENV}"
