@@ -116,7 +116,7 @@ data "aws_lb" "ga_nlb"{
 
 resource "aws_lb_listener" "sftp" {
   load_balancer_arn   = data.aws_lb.ga_nlb.arn
-  port                = "8022"
+  port                = "22"
   protocol            = "TCP"
   default_action {
     type              = "forward"
