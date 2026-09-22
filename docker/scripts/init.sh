@@ -20,8 +20,8 @@ function main() {
     trap 'echo "\"${last_command}\" command failed with exit code $?." >&2' EXIT
 
     wait_for_mount_availability
-    wait_for_database_service_availability
-    create_database_and_credentials
+    #wait_for_database_service_availability
+    #create_database_and_credentials
     configure
     configure_fluentbit
     start
@@ -197,12 +197,12 @@ function configure() {
     sed -i "s/\$HOSTNAME/\$SYSTEM_NAME/g" /temp/entrypoint.sh
 
     # Update the file database.xml with the correct values.
-    echo "Update database config"
-    sed -i "s|password\">.*<|password\">$DB_PASSWORD<|g" "${config_folder}"/database.xml
-    sed -i "s|username\">.*<|username\">$DB_USERNAME<|g" "${config_folder}"/database.xml
-    sed -i "s|url\">.*<|url\">jdbc:mariadb://$DB_ADDRESS:3306/GADATA?useCursorFetch=true\&amp;defaultFetchSize=20\&amp;characterEncoding=utf8\&amp;allowPublicKeyRetrieval=true<|g" "${config_folder}"/database.xml
-    sed -i "s|driverClassName\">.*<|driverClassName\">org.mariadb.jdbc.Driver<|g" "${config_folder}"/database.xml
-    sed -i "s|passwordIsEncrypted\">.*<|passwordIsEncrypted\">false<|g" "${config_folder}"/database.xml
+    # echo "Update database config"
+    # sed -i "s|password\">.*<|password\">$DB_PASSWORD<|g" "${config_folder}"/database.xml
+    # sed -i "s|username\">.*<|username\">$DB_USERNAME<|g" "${config_folder}"/database.xml
+    # sed -i "s|url\">.*<|url\">jdbc:mariadb://$DB_ADDRESS:3306/GADATA?useCursorFetch=true\&amp;defaultFetchSize=20\&amp;characterEncoding=utf8\&amp;allowPublicKeyRetrieval=true<|g" "${config_folder}"/database.xml
+    # sed -i "s|driverClassName\">.*<|driverClassName\">org.mariadb.jdbc.Driver<|g" "${config_folder}"/database.xml
+    # sed -i "s|passwordIsEncrypted\">.*<|passwordIsEncrypted\">false<|g" "${config_folder}"/database.xml
 
     # Update the header's page with ECR image.
     echo "Update the header's page with ECR image"
