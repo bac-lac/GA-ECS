@@ -88,20 +88,6 @@ variable "DB_MAINTENANCE_WINDOW" {
   default = "sat:05:00-sat:06:00"
 }
 
-variable "DB_PASSWORD" {
-  type = string
-  sensitive = true
-  description = "The DB password for the application."
-  default = "DB_PASSWORD"
-}
-
-variable "DB_USERNAME" {
-  type = string
-  sensitive = true
-  description = "The DB username for the application."
-  default = "DB_USERNAME"
-}
-
 variable "ECR_IMAGE" {
   type = string
   description = "The image name used for task definition."

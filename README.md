@@ -54,12 +54,6 @@ The following environment variables are used to control the application at run-t
 > DB_MAINTENANCE_WINDOW *: The maintenance window for the database. (UTC)
 - Default value: sat:05:00-sat:06:00
 
-> DB_PASSWORD *: The DB password for the application.
-- Default value: DB_PASSWORD
-
-> DB_USERNAME *: The DB username for the application.
-- Default value: DB_USERNAME
-
 > ECR_IMAGE: The ECR image name used for the task definition. This value is auto-generated.
 - Default value: ECR_IMAGE
 
@@ -91,7 +85,6 @@ The following environment variables are used to control the application at run-t
 
 ## Run the Application Locally
 
-1. Append `\&amp;allowPublicKeyRetrieval=true` as a parameter to the URL entry under the configure function in the init.sh file.
 1. Build the application container as per the above [Container Image Build](#container-image-build) instructions.
 1. cp ./docker/example.env ./docker/local.env
 1. Edit the local.env as required.
