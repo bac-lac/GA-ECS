@@ -55,6 +55,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.ref }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v6
@@ -66,7 +68,12 @@ jobs:
           audience: sts.amazonaws.com
 
       - name: echo test
-        run: echo "Deploying to ${{ env.ENV }}"
+        run: |
+          echo "Deploying to ${{ env.ENV }}"
+          echo "head_sha: ${{ github.event.workflow_run.head_sha }}"
+          echo "github.ref: ${{ github.ref }}"
+          echo "ref: ${{ github.event.workflow_run.head_sha || github.ref }}"
+
 
       - name: Get latest version immutable image URI
         run: |
