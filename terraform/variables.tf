@@ -8,14 +8,14 @@ variable "ACCOUNT" {
 variable "ADMIN_DB_PASSWORD" {
   type = string
   sensitive = true
-  description = "The DB password for the admin account."
+  description = "The DB password for RDS."
   default = "ADMIN_DB_PASSWORD"
 }
 
 variable "ADMIN_DB_USERNAME" {
   type = string
   sensitive = true
-  description = "The DB username for the admin account."
+  description = "The DB username for RDS."
   default = "ADMIN_DB_USERNAME"
 }
 

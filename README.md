@@ -15,10 +15,10 @@ The following environment variables are used to control the application at run-t
 > ACCOUNT *: The AWS account number.
 - Default value: ACCOUNT
 
-> ADMIN_DB_USERNAME *: The DB username for the admin account.
+> ADMIN_DB_USERNAME *: The DB username for RDS.
 - Default value: ADMIN_DB_USERNAME
 
-> ADMIN_DB_PASSWORD *: The DB password for the admin account.
+> ADMIN_DB_PASSWORD *: The DB password for RDS.
 - Default value: ADMIN_DB_PASSWORD
 
 > CERT_BODY *: The certificate body.
