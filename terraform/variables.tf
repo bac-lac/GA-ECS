@@ -8,14 +8,14 @@ variable "ACCOUNT" {
 variable "ADMIN_DB_PASSWORD" {
   type = string
   sensitive = true
-  description = "The DB password for the admin account."
+  description = "The DB password for RDS."
   default = "ADMIN_DB_PASSWORD"
 }
 
 variable "ADMIN_DB_USERNAME" {
   type = string
   sensitive = true
-  description = "The DB username for the admin account."
+  description = "The DB username for RDS."
   default = "ADMIN_DB_USERNAME"
 }
 
@@ -86,20 +86,6 @@ variable "DB_MAINTENANCE_WINDOW" {
   type = string
   description = "The maintenance window for the database. (UTC)"
   default = "sat:05:00-sat:06:00"
-}
-
-variable "DB_PASSWORD" {
-  type = string
-  sensitive = true
-  description = "The DB password for the application."
-  default = "DB_PASSWORD"
-}
-
-variable "DB_USERNAME" {
-  type = string
-  sensitive = true
-  description = "The DB username for the application."
-  default = "DB_USERNAME"
 }
 
 variable "ECR_IMAGE" {

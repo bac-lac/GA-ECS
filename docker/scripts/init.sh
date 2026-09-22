@@ -20,8 +20,6 @@ function main() {
     trap 'echo "\"${last_command}\" command failed with exit code $?." >&2' EXIT
 
     wait_for_mount_availability
-    wait_for_database_service_availability
-    create_database_and_credentials
     configure
     configure_fluentbit
     start
@@ -70,95 +68,10 @@ function wait_for_mount_availability() {
     echo "File service is mounted."
 }
 
-#######################################
-# Wait until a given database service becomes available.
-# Fail if the database service is not available after a given duration.
-# Globals:
-#   DB_ADDRESS
-# Arguments:
-#   None
-# Outputs:
-#   None
-#######################################
-function wait_for_database_service_availability() {
-    echo "Wait for database"
-    # Parameters
-    local database_host="$DB_ADDRESS"    
-    local database_port="3306"
-    local maximum_wait="15"
-
-    # Variables
-    local wait_time
-
-    echo "Pinging database service ${database_host}:${database_port} until readiness for a maximum of ${maximum_wait} seconds..."
-    wait_time=0
-    until mysqladmin ping --host "${database_host}" --port "${database_port}" --silent; do
-        if [[ ${wait_time} -ge ${maximum_wait} ]]; then
-            echo "The database service did not start within ${wait_time} s. Aborting."
-            exit 1
-        else
-            echo "Waiting for the database service to start (${wait_time} s)..."
-            sleep 1
-            ((++wait_time))
-        fi
-    done
-    echo "Database service is up and running."
-}
-
-#######################################
-# Create Database and Credentials
-# Globals:
-#   ADMIN_DB_PASSWORD
-#   ADMIN_DB_USERNAME
-#   DB_ADDRESS
-#   DB_PASSWORD
-#   DB_USERNAME
-#   FORCE_REFRESH
-# Arguments:
-#   None
-# Outputs:
-#   None
-#######################################
-function create_database_and_credentials() {
-    echo "Create Database"
-
-    # Drop database if FORCE_REFRESH is true
-    if [[ "${FORCE_REFRESH^^}" == "TRUE" ]]; then 
-        echo "Drop MySQL database..."
-        mysql -h "$DB_ADDRESS" -u"$ADMIN_DB_USERNAME" -p"$ADMIN_DB_PASSWORD" --execute "WARNINGS; DROP DATABASE IF EXISTS \`GADATA\`;"
-
-        echo "Deleting MySQL database user..."
-        mysql -h "$DB_ADDRESS" -u"$ADMIN_DB_USERNAME" -p"$ADMIN_DB_PASSWORD" --execute "WARNINGS; DROP USER IF EXISTS \`$DB_USERNAME\`;"
-    fi
-
-    # check if the database already exists
-    echo "Check if the database already exists"
-    result=$(mysql -h "$DB_ADDRESS" -u"$ADMIN_DB_USERNAME" -p"$ADMIN_DB_PASSWORD" -e "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME='GADATA'" 2>&1)
-    if [[ $result =~ "GADATA" ]]; then 
-        echo "Database exists";
-    else
-        echo "Database does not exists";
-        echo "Creating MySQL database if not existing..."
-        mysql -h "$DB_ADDRESS" -u"$ADMIN_DB_USERNAME" -p"$ADMIN_DB_PASSWORD" --execute "WARNINGS; CREATE DATABASE IF NOT EXISTS \`GADATA\` CHARSET=UTF8;"
-
-        echo "Creating MySQL database user if not existing..."
-        mysql -h "$DB_ADDRESS" -u"$ADMIN_DB_USERNAME" -p"$ADMIN_DB_PASSWORD" --execute "WARNINGS; CREATE USER IF NOT EXISTS \`$DB_USERNAME\` IDENTIFIED BY '$DB_PASSWORD';"
-
-        echo "Granting all privileges on MySQL database objects to user..."
-        mysql -h "$DB_ADDRESS" -u"$ADMIN_DB_USERNAME" -p"$ADMIN_DB_PASSWORD" --execute "WARNINGS; GRANT ALL PRIVILEGES ON \`GADATA\`.* TO \`$DB_USERNAME\`;"
-
-        echo "Importing empty database..."
-        mysql -h "$DB_ADDRESS" -u"$ADMIN_DB_USERNAME" -p"$ADMIN_DB_PASSWORD" < /temp/mysql_dump.sql
-    fi
-
-}
 
 #######################################
 # Configure the application
 # Globals:
-#   DB_ADDRESS
-#   DB_PASSWORD
-#   DB_USERNAME
 #   ECR_IMAGE
 #   FRESH_INSTALL
 # Arguments:
@@ -195,14 +108,6 @@ function configure() {
     # Update hostname in entrypoint.
     echo "Update hostname in entrypoint"
     sed -i "s/\$HOSTNAME/\$SYSTEM_NAME/g" /temp/entrypoint.sh
-
-    # Update the file database.xml with the correct values.
-    echo "Update database config"
-    sed -i "s|password\">.*<|password\">$DB_PASSWORD<|g" "${config_folder}"/database.xml
-    sed -i "s|username\">.*<|username\">$DB_USERNAME<|g" "${config_folder}"/database.xml
-    sed -i "s|url\">.*<|url\">jdbc:mariadb://$DB_ADDRESS:3306/GADATA?useCursorFetch=true\&amp;defaultFetchSize=20\&amp;characterEncoding=utf8\&amp;allowPublicKeyRetrieval=true<|g" "${config_folder}"/database.xml
-    sed -i "s|driverClassName\">.*<|driverClassName\">org.mariadb.jdbc.Driver<|g" "${config_folder}"/database.xml
-    sed -i "s|passwordIsEncrypted\">.*<|passwordIsEncrypted\">false<|g" "${config_folder}"/database.xml
 
     # Update the header's page with ECR image.
     echo "Update the header's page with ECR image"
