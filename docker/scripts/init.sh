@@ -178,8 +178,8 @@ function configure() {
     echo "Copy upgrade file"
     cp -Rf /temp/upgrader/ "${opt_ga_folder}"/
 
-    # Copy filesystem only if FRESH_INSTALL is TRUE.
-    if [[ "${FRESH_INSTALL^^}" == "TRUE" ]]; then 
+    # Copy filesystem only if FRESH_INSTALL is TRUE or if config folder is empty.
+    if [[ "${FRESH_INSTALL^^}" == "TRUE" || -z "$( ls -A "${config_folder}" )" ]]; then 
         echo "Copy filesystem"
         cp -Rf /temp/userdata/ "${opt_ga_folder}"/
         cp -Rf /temp/config/ "${etc_ga_folder}"/
