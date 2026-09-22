@@ -65,6 +65,9 @@ jobs:
           role-skip-session-tagging: true
           audience: sts.amazonaws.com
 
+      - name: echo test
+        run: echo "Deploying to ${{ env.ENV }}"
+
       - name: Get latest version immutable image URI
         run: |
           REPO=bac-lac-gc-ca/mft
