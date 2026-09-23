@@ -17,7 +17,13 @@ COPY --from=builder /usr/bin/entrypoint.sh /temp/
 
 COPY /docker/scripts/init.sh /temp/
 RUN chmod -R 777 /temp/
-RUN chown -R gamft:gamft /usr/bin/entrypoint.sh
+#RUN chown -R gamft:gamft /usr/bin/entrypoint.sh
+
+# Replace move with remove for upgrade file to eliminate CVEs.
+RUN sed -i 's|mv upgrader/ga_upgrade.jar upgrader/ga_upgrade_complete.jar|rm upgrader/ga_upgrade.jar|g' /usr/bin/entrypoint.sh
+
+# Update hostname in entrypoint with SYSTEM_NAME (MFT-1 or MFT-2).
+RUN sed -i "s/\$HOSTNAME/\$SYSTEM_NAME/g" /usr/bin/entrypoint.sh
 
 # Copy base rocky repo to the container.
 COPY /docker/configs/*.repo /etc/yum.repos.d/

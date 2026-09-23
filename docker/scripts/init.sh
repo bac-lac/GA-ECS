@@ -101,13 +101,13 @@ function configure() {
     fi
 
     # Replace move with remove for upgrade file to eliminate CVEs.
-    echo "Replace move with remove for upgrade file"
-    sed -i "s|mv upgrader/ga_upgrade.jar upgrader/ga_upgrade_complete.jar|rm upgrader/ga_upgrade.jar|g" /temp/entrypoint.sh
-    sed -i "s|mv upgrader/ga_upgrade.jar upgrader/ga_upgrade_complete.jar|rm upgrader/ga_upgrade.jar|g" /usr/bin/entrypoint.sh
+    # echo "Replace move with remove for upgrade file"
+    # sed -i "s|mv upgrader/ga_upgrade.jar upgrader/ga_upgrade_complete.jar|rm upgrader/ga_upgrade.jar|g" /temp/entrypoint.sh
+    # sed -i "s|mv upgrader/ga_upgrade.jar upgrader/ga_upgrade_complete.jar|rm upgrader/ga_upgrade.jar|g" /usr/bin/entrypoint.sh
 
     # Update hostname in entrypoint with SYSTEM_NAME (MFT-1 or MFT-2).
-    echo "Update hostname in entrypoint"
-    sed -i "s/\$HOSTNAME/\$SYSTEM_NAME/g" /temp/entrypoint.sh
+    # echo "Update hostname in entrypoint"
+    # sed -i "s/\$HOSTNAME/\$SYSTEM_NAME/g" /temp/entrypoint.sh
 
     # Update the header's page with ECR image.
     echo "Update the header's page with ECR image"
