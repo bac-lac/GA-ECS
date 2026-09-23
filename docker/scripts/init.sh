@@ -149,7 +149,7 @@ function start() {
 
     echo "Start application"
 
-    exec /temp/entrypoint.sh
+    exec /usr/bin/entrypoint.sh
 }
 
 main 
