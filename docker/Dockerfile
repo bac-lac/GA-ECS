@@ -21,7 +21,7 @@ COPY /docker/configs/*.repo /etc/yum.repos.d/
 RUN rm -rf /etc/yum.repos.d/linuxrepos.repo
 
 RUN dnf update -y \
-  && dnf install unzip -y \
+  && dnf install unzip epel-release -y \
   && dnf install icu -y \
   && dnf install fluent-bit --nobest -y \
   && dnf -y clean all \
