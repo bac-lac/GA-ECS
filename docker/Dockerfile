@@ -26,7 +26,9 @@ RUN rm -rf /etc/yum.repos.d/linuxrepos.repo
 
 # Install dependencies for fluent-bit, SaxonC, aws cli and marcedit.
 RUN dnf update -y \
-  && dnf install unzip epel-release icu fluent-bit --nobest -y \
+  && dnf install unzip epel-release -y \
+  && dnf install icu -y \
+  && dnf install fluent-bit --nobest -y \
   && dnf -y clean all \
   && rm -rf /var/cache
 
