@@ -21,13 +21,11 @@ COPY /docker/configs/*.repo /etc/yum.repos.d/
 RUN rm -rf /etc/yum.repos.d/linuxrepos.repo
 
 RUN dnf update -y \
-  && curl -v -L -O https://dev.mysql.com/get/mysql84-community-release-el9-1.noarch.rpm \
-  && dnf install mysql84-community-release-el9-1.noarch.rpm -y \
-  && dnf install unzip epel-release mysql-community-client -y \
+  && dnf install unzip epel-release -y \
   && dnf install icu -y \
   && dnf install fluent-bit --nobest -y \
   && dnf -y clean all \
-  && rm -rf /var/cache && rm mysql84-community-release-el9-1.noarch.rpm
+  && rm -rf /var/cache
 
 # Installing latest SaxonC 12 HE
 RUN BASE_URL="https://downloads.saxonica.com/SaxonC/HE/12" && \
