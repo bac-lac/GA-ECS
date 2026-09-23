@@ -73,7 +73,6 @@ function wait_for_mount_availability() {
 # Configure the application
 # Globals:
 #   ECR_IMAGE
-#   FRESH_INSTALL
 # Arguments:
 #   None
 # Outputs:
@@ -91,8 +90,8 @@ function configure() {
     echo "Copy upgrade file"
     cp -Rf /temp/upgrader/ "${opt_ga_folder}"/
 
-    # Copy filesystem only if FRESH_INSTALL is TRUE or if config folder is empty.
-    if [[ "${FRESH_INSTALL^^}" == "TRUE" || -z "$( ls -A "${config_folder}" )" ]]; then 
+    # Copy filesystem only if config folder is empty.
+    if [[ -z "$( ls -A "${config_folder}" )" ]]; then 
         echo "Copy filesystem"
         cp -Rf /temp/userdata/ "${opt_ga_folder}"/
         cp -Rf /temp/config/ "${etc_ga_folder}"/
@@ -105,7 +104,7 @@ function configure() {
     echo "Replace move with remove for upgrade file"
     sed -i "s|mv upgrader/ga_upgrade.jar upgrader/ga_upgrade_complete.jar|rm upgrader/ga_upgrade.jar|g" /temp/entrypoint.sh
 
-    # Update hostname in entrypoint.
+    # Update hostname in entrypoint with SYSTEM_NAME (MFT-1 or MFT-2).
     echo "Update hostname in entrypoint"
     sed -i "s/\$HOSTNAME/\$SYSTEM_NAME/g" /temp/entrypoint.sh
 

@@ -1,29 +1,27 @@
-ARG BASE_IMAGE=fortrallc/goanywhere-mft:7.9.1
+FROM fortrallc/goanywhere-mft:7.9.1
 
-FROM $BASE_IMAGE AS builder
-
-FROM $BASE_IMAGE
-USER root
 WORKDIR /temp
-COPY --from=builder /opt/Fortra/GoAnywhere/userdata/ userdata/
-COPY --from=builder /opt/Fortra/GoAnywhere/upgrader/ upgrader/ 
-COPY --from=builder /etc/Fortra/GoAnywhere/config/ config/
-COPY --from=builder /etc/Fortra/GoAnywhere/tomcat/ tomcat/
-COPY --from=builder /opt/Fortra/GoAnywhere/tomcat/logs/ logs/
-COPY --from=builder /opt/Fortra/GoAnywhere/ghttpsroot/custom/ custom/
-COPY --from=builder /usr/bin/entrypoint.sh /temp/
+
+# Copy files from GoAnywhere that will be copied to the EFS volume.
+COPY /opt/Fortra/GoAnywhere/userdata/ userdata/
+COPY /opt/Fortra/GoAnywhere/upgrader/ upgrader/ 
+COPY /etc/Fortra/GoAnywhere/config/ config/
+COPY /etc/Fortra/GoAnywhere/tomcat/ tomcat/
+COPY /opt/Fortra/GoAnywhere/tomcat/logs/ logs/
+COPY /opt/Fortra/GoAnywhere/ghttpsroot/custom/ custom/
+COPY /usr/bin/entrypoint.sh /temp/
 
 COPY /docker/scripts/init.sh /temp/
 RUN chmod -R 777 /temp/
 
+# Copy base rocky repo to the container.
 COPY /docker/configs/*.repo /etc/yum.repos.d/
-
+# Remove the linuxrepos.repo file to avoid conflicts with the base rocky repo.
 RUN rm -rf /etc/yum.repos.d/linuxrepos.repo
 
+# Install dependencies for fluent-bit, SaxonC, aws cli and marcedit.
 RUN dnf update -y \
-  && dnf install unzip epel-release -y \
-  && dnf install icu -y \
-  && dnf install fluent-bit --nobest -y \
+  && dnf install unzip epel-release icu fluent-bit --nobest -y \
   && dnf -y clean all \
   && rm -rf /var/cache
 
@@ -37,7 +35,6 @@ RUN BASE_URL="https://downloads.saxonica.com/SaxonC/HE/12" && \
     unzip /tmp/saxon.zip -d /opt/saxonica && \
     mv /opt/saxonica/$FILE /opt/saxonica/saxon && \
     rm /tmp/saxon.zip
-    
 ENV LD_LIBRARY_PATH="/opt/saxonica/saxon/SaxonCCoreHE/lib:/opt/saxonica/saxon/SaxonCHE/lib:${LD_LIBRARY_PATH}"
 ENV PATH="/opt/saxonica/saxon/SaxonCHE/bin:${PATH}"
 
