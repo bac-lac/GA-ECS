@@ -73,7 +73,6 @@ function wait_for_mount_availability() {
 # Configure the application
 # Globals:
 #   ECR_IMAGE
-#   FRESH_INSTALL
 # Arguments:
 #   None
 # Outputs:
@@ -91,8 +90,8 @@ function configure() {
     echo "Copy upgrade file"
     cp -Rf /temp/upgrader/ "${opt_ga_folder}"/
 
-    # Copy filesystem only if FRESH_INSTALL is TRUE or if config folder is empty.
-    if [[ "${FRESH_INSTALL^^}" == "TRUE" || -z "$( ls -A "${config_folder}" )" ]]; then 
+    # Copy filesystem only if config folder is empty.
+    if [[ -z "$( ls -A "${config_folder}" )" ]]; then 
         echo "Copy filesystem"
         cp -Rf /temp/userdata/ "${opt_ga_folder}"/
         cp -Rf /temp/config/ "${etc_ga_folder}"/
@@ -100,14 +99,6 @@ function configure() {
         cp -Rf /temp/logs/ "${opt_ga_folder}"/tomcat/
         cp -Rf /temp/custom/ "${opt_ga_folder}"/ghttpsroot/
     fi
-
-    # Replace move with remove for upgrade file to eliminate CVEs.
-    echo "Replace move with remove for upgrade file"
-    sed -i "s|mv upgrader/ga_upgrade.jar upgrader/ga_upgrade_complete.jar|rm upgrader/ga_upgrade.jar|g" /temp/entrypoint.sh
-
-    # Update hostname in entrypoint.
-    echo "Update hostname in entrypoint"
-    sed -i "s/\$HOSTNAME/\$SYSTEM_NAME/g" /temp/entrypoint.sh
 
     # Update the header's page with ECR image.
     echo "Update the header's page with ECR image"
@@ -158,7 +149,7 @@ function start() {
 
     echo "Start application"
 
-    exec /temp/entrypoint.sh
+    exec /usr/bin/entrypoint.sh
 }
 
 main 

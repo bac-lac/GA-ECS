@@ -107,18 +107,6 @@ variable "EXTERNAL_ID" {
   default = "EXTERNAL_ID"
 }
 
-variable "FORCE_REFRESH" {
-  type = string
-  description = "If set to true, this will start the application with an empty database."
-  default = "FALSE"
-}
-
-variable "FRESH_INSTALL" {
-  type = string
-  description = "If set to TRUE, it will do a fresh install of the filesystem."
-  default = "FALSE"
-}
-
 variable "MFT_CLUSTER" {
   type = string
   description = "If set to true, this will start the application in cluster mode."
