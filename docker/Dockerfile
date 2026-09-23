@@ -13,11 +13,10 @@ COPY --from=builder /etc/Fortra/GoAnywhere/config/ config/
 COPY --from=builder /etc/Fortra/GoAnywhere/tomcat/ tomcat/
 COPY --from=builder /opt/Fortra/GoAnywhere/tomcat/logs/ logs/
 COPY --from=builder /opt/Fortra/GoAnywhere/ghttpsroot/custom/ custom/
-COPY --from=builder /usr/bin/entrypoint.sh /temp/
 
+# Copy the init script to the container.
 COPY /docker/scripts/init.sh /temp/
 RUN chmod -R 777 /temp/
-#RUN chown -R gamft:gamft /usr/bin/entrypoint.sh
 
 # Replace move with remove for upgrade file to eliminate CVEs.
 RUN sed -i 's|mv upgrader/ga_upgrade.jar upgrader/ga_upgrade_complete.jar|rm upgrader/ga_upgrade.jar|g' /usr/bin/entrypoint.sh
@@ -27,6 +26,7 @@ RUN sed -i "s/\$HOSTNAME/\$SYSTEM_NAME/g" /usr/bin/entrypoint.sh
 
 # Copy base rocky repo to the container.
 COPY /docker/configs/*.repo /etc/yum.repos.d/
+
 # Remove the linuxrepos.repo file to avoid conflicts with the base rocky repo.
 RUN rm -rf /etc/yum.repos.d/linuxrepos.repo
 
