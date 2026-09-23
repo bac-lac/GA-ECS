@@ -1,5 +1,7 @@
 FROM fortrallc/goanywhere-mft:7.9.1
 
+USER root
+
 WORKDIR /temp
 
 # Copy files from GoAnywhere that will be copied to the EFS volume.
