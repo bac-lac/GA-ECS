@@ -17,7 +17,7 @@ COPY --from=builder /usr/bin/entrypoint.sh /temp/
 
 COPY /docker/scripts/init.sh /temp/
 RUN chmod -R 777 /temp/
-RUN chmod -R 777 /usr/bin/entrypoint.sh
+RUN chown -R gamft:gamft /usr/bin/entrypoint.sh
 
 # Copy base rocky repo to the container.
 COPY /docker/configs/*.repo /etc/yum.repos.d/
