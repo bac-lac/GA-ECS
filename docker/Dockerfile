@@ -1,17 +1,17 @@
-FROM fortrallc/goanywhere-mft:7.9.1
+ARG BASE_IMAGE=fortrallc/goanywhere-mft:7.9.1
 
+FROM $BASE_IMAGE AS builder
+
+FROM $BASE_IMAGE
 USER root
-
 WORKDIR /temp
-
-# Copy files from GoAnywhere that will be copied to the EFS volume.
-COPY /opt/Fortra/GoAnywhere/userdata/ userdata/
-COPY /opt/Fortra/GoAnywhere/upgrader/ upgrader/ 
-COPY /etc/Fortra/GoAnywhere/config/ config/
-COPY /etc/Fortra/GoAnywhere/tomcat/ tomcat/
-COPY /opt/Fortra/GoAnywhere/tomcat/logs/ logs/
-COPY /opt/Fortra/GoAnywhere/ghttpsroot/custom/ custom/
-COPY /usr/bin/entrypoint.sh /temp/
+COPY --from=builder /opt/Fortra/GoAnywhere/userdata/ userdata/
+COPY --from=builder /opt/Fortra/GoAnywhere/upgrader/ upgrader/ 
+COPY --from=builder /etc/Fortra/GoAnywhere/config/ config/
+COPY --from=builder /etc/Fortra/GoAnywhere/tomcat/ tomcat/
+COPY --from=builder /opt/Fortra/GoAnywhere/tomcat/logs/ logs/
+COPY --from=builder /opt/Fortra/GoAnywhere/ghttpsroot/custom/ custom/
+COPY --from=builder /usr/bin/entrypoint.sh /temp/
 
 COPY /docker/scripts/init.sh /temp/
 RUN chmod -R 777 /temp/
