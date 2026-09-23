@@ -5,6 +5,8 @@ FROM $BASE_IMAGE AS builder
 FROM $BASE_IMAGE
 USER root
 WORKDIR /temp
+
+# Copy files from GoAnywhere that will be copied to the EFS volume.
 COPY --from=builder /opt/Fortra/GoAnywhere/userdata/ userdata/
 COPY --from=builder /opt/Fortra/GoAnywhere/upgrader/ upgrader/ 
 COPY --from=builder /etc/Fortra/GoAnywhere/config/ config/
@@ -15,6 +17,7 @@ COPY --from=builder /usr/bin/entrypoint.sh /temp/
 
 COPY /docker/scripts/init.sh /temp/
 RUN chmod -R 777 /temp/
+RUN chmod -R 777 /usr/bin/entrypoint.sh
 
 # Copy base rocky repo to the container.
 COPY /docker/configs/*.repo /etc/yum.repos.d/

@@ -103,6 +103,7 @@ function configure() {
     # Replace move with remove for upgrade file to eliminate CVEs.
     echo "Replace move with remove for upgrade file"
     sed -i "s|mv upgrader/ga_upgrade.jar upgrader/ga_upgrade_complete.jar|rm upgrader/ga_upgrade.jar|g" /temp/entrypoint.sh
+    sed -i "s|mv upgrader/ga_upgrade.jar upgrader/ga_upgrade_complete.jar|rm upgrader/ga_upgrade.jar|g" /usr/bin/entrypoint.sh
 
     # Update hostname in entrypoint with SYSTEM_NAME (MFT-1 or MFT-2).
     echo "Update hostname in entrypoint"
