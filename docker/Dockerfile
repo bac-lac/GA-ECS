@@ -24,6 +24,10 @@ RUN sed -i 's|mv upgrader/ga_upgrade.jar upgrader/ga_upgrade_complete.jar|rm upg
 # Update hostname in entrypoint with SYSTEM_NAME (MFT-1 or MFT-2).
 RUN sed -i "s/\$HOSTNAME/\$SYSTEM_NAME/g" /usr/bin/entrypoint.sh
 
+# Create AWS configuration directory
+RUN mkdir -p /home/gamft/.aws \
+  && chown -R gamft:gamft /home/gamft/
+
 # Copy base rocky repo to the container.
 COPY /docker/configs/*.repo /etc/yum.repos.d/
 

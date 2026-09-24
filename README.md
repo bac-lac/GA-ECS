@@ -67,6 +67,12 @@ The following environment variables are used to control the application at run-t
 > MFT_CLUSTER *: If set to true, this will start the application in cluster mode.
 - Default value: TRUE
 
+> PROFILE_DAMS_ROLE_ARN: The role ARN for the DAMS account.
+- Default value: PROFILE_DAMS_ROLE_ARN
+
+> PROFILE_PRESERVICA_ROLE_ARN: The role ARN for the PRESERVICA account.
+- Default value: PROFILE_PRESERVICA_ROLE_ARN
+
 > ROLE_ARN *: ARN of the role used by terraform..
 - Default value: ROLE_ARN
 
