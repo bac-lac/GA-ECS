@@ -67,6 +67,9 @@ The following environment variables are used to control the application at run-t
 > MFT_CLUSTER *: If set to true, this will start the application in cluster mode.
 - Default value: TRUE
 
+> PROFILE_CCTM_ROLE_ARN: The role ARN for the CCTM account.
+- Default value: PROFILE_CCTM_ROLE_ARN
+
 > ROLE_ARN *: ARN of the role used by terraform..
 - Default value: ROLE_ARN
 

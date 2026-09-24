@@ -41,6 +41,11 @@ data "aws_iam_policy_document" "ga_ecs_role_inline_policy" {
     actions   = ["logs:CreateLogGroup"]
     resources = ["arn:aws:logs:ca-central-1:${var.ACCOUNT}:log-group:*:*"]
   }
+  statement {
+    effect    = "Allow"
+    actions   = ["sts:AssumeRole"]
+    resources = ["*"]
+  }
 }
 
 data "aws_iam_policy_document" "ga_ecs_task_role_inline_policy" {
