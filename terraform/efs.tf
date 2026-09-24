@@ -43,7 +43,7 @@ resource "aws_efs_access_point" "ga_ap" {
     creation_info {
       owner_gid   = 888
       owner_uid   = 888
-      permissions = 755
+      permissions = 777
     }
     path = "/${each.key}"
   }
