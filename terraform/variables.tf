@@ -120,11 +120,11 @@ variable "PROFILE_DAMS_ROLE_ARN" {
   default = "PROFILE_DAMS_ROLE_ARN"
 }
 
-variable "PROFILE_DATAS3_ROLE_ARN" {
+variable "PROFILE_PRESERVICA_ROLE_ARN" {
   type = string  
   sensitive = true
-  description = "ARN of the role used by datas3 profile."
-  default = "PROFILE_DATAS3_ROLE_ARN"
+  description = "ARN of the role used by preservica profile."
+  default = "PROFILE_PRESERVICA_ROLE_ARN"
 }
 
 variable "ROLE_ARN" {

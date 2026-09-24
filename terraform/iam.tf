@@ -52,7 +52,7 @@ data "aws_iam_policy_document" "ga_ecs_task_role_inline_policy" {
   statement {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
-    resources = ["${var.PROFILE_DAMS_ROLE_ARN}", "${var.PROFILE_DATAS3_ROLE_ARN}"]
+    resources = ["${var.PROFILE_DAMS_ROLE_ARN}", "${var.PROFILE_PRESERVICA_ROLE_ARN}"]
   }
 }
 
