@@ -73,7 +73,8 @@ function wait_for_mount_availability() {
 # Configure the application
 # Globals:
 #   ECR_IMAGE
-#   PROFILE_CCTM_ROLE_ARN
+#   PROFILE_DAMS_ROLE_ARN
+#   PROFILE_DATAS3_ROLE_ARN
 # Arguments:
 #   None
 # Outputs:
@@ -109,8 +110,12 @@ function configure() {
     # Configure the AWS profile for the application.
     echo "Configure the AWS profile for the application"
     cat > ~/.aws/config <<EOF
-[profile CCTM]
-role_arn = ${PROFILE_CCTM_ROLE_ARN}
+[profile DAMS]
+role_arn = ${PROFILE_DAMS_ROLE_ARN}
+credential_source = EcsContainer
+region = ca-central-1
+[profile DATAS3]
+role_arn = ${PROFILE_DATAS3_ROLE_ARN}
 credential_source = EcsContainer
 region = ca-central-1
 EOF
