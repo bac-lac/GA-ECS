@@ -108,7 +108,6 @@ function configure() {
 
     # Configure the AWS profile for the application.
     echo "Configure the AWS profile for the application"
-    mkdir -p ~/.aws
     cat > ~/.aws/config <<EOF
 [profile CCTM]
 role_arn = ${PROFILE_CCTM_ROLE_ARN}
