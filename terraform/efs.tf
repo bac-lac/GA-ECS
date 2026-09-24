@@ -36,14 +36,14 @@ resource "aws_efs_access_point" "ga_ap" {
   )
   file_system_id  = aws_efs_file_system.ga_efs.id
   posix_user {
-    gid = 992
-    uid = 994
+    gid = 888
+    uid = 888
   }
   root_directory {
     creation_info {
-      owner_gid   = 992
-      owner_uid   = 994
-      permissions = 777
+      owner_gid   = 888
+      owner_uid   = 888
+      permissions = 755
     }
     path = "/${each.key}"
   }
