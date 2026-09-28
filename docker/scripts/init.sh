@@ -101,9 +101,9 @@ function configure() {
         cp -Rf /temp/logs/ "${opt_ga_folder}"/tomcat/
         cp -Rf /temp/custom/ "${opt_ga_folder}"/ghttpsroot/
         
-        # Copy database config file to the shared folder.
+        # Copy database config file to the shared folder only if it does not exist.
         echo "Copy database file to the shared folder"
-        cp -Rf /temp/config/database.xml "${etc_ga_folder}"/database/
+        cp -n /temp/config/database.xml "${etc_ga_folder}"/database/
 
         # Creating symbolic link for the database configuration file.
         # This is required because the database configuration file is shared across all the nodes in the cluster.
