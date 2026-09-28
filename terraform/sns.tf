@@ -23,15 +23,10 @@ EOF
 }
 
 resource "aws_sns_topic_subscription" "ga_sns_topic_subscription" {
+  for_each  = toset(var.CLOUDWATCH_EMAIL)
   topic_arn = aws_sns_topic.ga_sns_topic.arn
   protocol  = "email"
-  endpoint  = "${var.CLOUDWATCH_EMAIL}"
-}
-
-resource "aws_sns_topic_subscription" "ga_sns_topic_subscription_dams" {
-  topic_arn = aws_sns_topic.ga_sns_topic.arn
-  protocol  = "email"
-  endpoint  = "${var.DAMS_EMAIL}"
+  endpoint  = each.value
 }
 
 resource "aws_sns_topic_policy" "ga_sns_topic_policy" {
