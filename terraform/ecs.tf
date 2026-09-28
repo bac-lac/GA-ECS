@@ -48,7 +48,9 @@ resource "aws_ecs_task_definition" "ga_task_definition_mft" {
     }
   }
   container_definitions = templatefile("task-definitions/mft.tftpl", {
+                                        CPU                         = var.TASK_DEFINITION_CPU,
                                         ECR_IMAGE                   = var.ECR_IMAGE,
+                                        MEMORY                      = var.TASK_DEFINITION_MEMORY,
                                         MFT_NUMBER                  = count.index + 1,
                                         MFT_CLUSTER                 = var.MFT_CLUSTER,
                                         PROFILE_DAMS_ROLE_ARN       = var.PROFILE_DAMS_ROLE_ARN,
