@@ -22,7 +22,7 @@ locals {
 resource "aws_efs_access_point" "ga_ap" {
   for_each = toset(
     concat(
-      ["userdata"],
+      ["userdata", "database"],
       flatten([
         for i in range(1, local.cluster_nodes + 1) : [
           "upgrader${i}",

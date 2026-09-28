@@ -100,6 +100,15 @@ function configure() {
         cp -Rf /temp/tomcat/ "${etc_ga_folder}"/
         cp -Rf /temp/logs/ "${opt_ga_folder}"/tomcat/
         cp -Rf /temp/custom/ "${opt_ga_folder}"/ghttpsroot/
+        
+        # Copy database config files to the shared folder.
+        echo "Copy database files to the shared folder"
+        cp -Rf /temp/config/database.xml "${etc_ga_folder}"/database/
+
+        # Creating symbolic link for application configuration files.
+        echo "Creating symbolic link for application configuration files"
+        cd "${config_folder}"
+        ln -s "${etc_ga_folder}"/database/database.xml "${config_folder}"/database.xml
     fi
 
     # Update the header's page with ECR image.

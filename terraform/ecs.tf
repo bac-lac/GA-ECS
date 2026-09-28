@@ -29,6 +29,7 @@ resource "aws_ecs_task_definition" "ga_task_definition_mft" {
   dynamic "volume" {
     for_each = tomap({
       ga_ap_userdata      = aws_efs_access_point.ga_ap["userdata"].id
+      ga_ap_database      = aws_efs_access_point.ga_ap["database"].id
       ga_ap_upgrader      = aws_efs_access_point.ga_ap["upgrader${count.index + 1}"].id
       ga_ap_config        = aws_efs_access_point.ga_ap["config${count.index + 1}"].id
       ga_ap_tomcatserver  = aws_efs_access_point.ga_ap["tomcatserver${count.index + 1}"].id
