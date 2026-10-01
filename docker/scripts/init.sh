@@ -92,6 +92,11 @@ function configure() {
     echo "Copy upgrade file"
     cp -Rf /temp/upgrader/ "${opt_ga_folder}"/
 
+    echo "ls -la ${config_folder}"
+    ls -la "${config_folder}"
+    echo "cat https config file"
+    cat "${config_folder}/https.xml"
+
     # Copy userdata only if folder is empty.
     if [[ -z "$( ls -A "${opt_ga_folder}/userdata" )" ]]; then 
         echo "Copy userdata to the shared folder"
