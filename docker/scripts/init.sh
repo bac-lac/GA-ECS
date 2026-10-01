@@ -92,19 +92,26 @@ function configure() {
     echo "Copy upgrade file"
     cp -Rf /temp/upgrader/ "${opt_ga_folder}"/
 
+    # Copy userdata only if folder is empty.
+    if [[ -z "$( ls -A "${opt_ga_folder}/userdata" )" ]]; then 
+        echo "Copy userdata to the shared folder"
+        cp -Rf /temp/userdata/ "${opt_ga_folder}"/
+    fi
+
+    # Copy database config file to the shared folder only if it does not exist.
+    if [ ! -f "${etc_ga_folder}"/database/database.xml ]; then
+        echo "Copy database file to the shared folder"
+        cp /temp/config/database.xml "${etc_ga_folder}"/database/
+    fi
+
     # Copy filesystem only if config folder is empty.
     if [[ -z "$( ls -A "${config_folder}" )" ]]; then 
-        echo "Copy filesystem"
-        cp -Rf /temp/userdata/ "${opt_ga_folder}"/
+        echo "Copy filesystem"        
         cp -Rf /temp/config/ "${etc_ga_folder}"/
         cp -Rf /temp/tomcat/ "${etc_ga_folder}"/
         cp -Rf /temp/logs/ "${opt_ga_folder}"/tomcat/
         cp -Rf /temp/custom/ "${opt_ga_folder}"/ghttpsroot/
         
-        # Copy database config file to the shared folder only if it does not exist.
-        echo "Copy database file to the shared folder"
-        cp -n /temp/config/database.xml "${etc_ga_folder}"/database/
-
         # Creating symbolic link for the database configuration file.
         # This is required because the database configuration file is shared across all the nodes in the cluster.
         echo "Creating symbolic link for the database configuration file"
