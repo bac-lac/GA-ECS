@@ -35,11 +35,11 @@ COPY /docker/configs/*.repo /etc/yum.repos.d/
 RUN rm -rf /etc/yum.repos.d/linuxrepos.repo
 
 # Install dependencies for fluent-bit, SaxonC, aws cli and marcedit.
-RUN dnf update -y \
-  && dnf install unzip epel-release -y \
-  && dnf install icu -y \
-  && dnf install fluent-bit --nobest -y \
-  && dnf -y clean all \
+RUN microdnf update -y \
+  && microdnf install unzip epel-release -y \
+  && microdnf install icu -y \
+  && microdnf install fluent-bit --nobest -y \
+  && microdnf -y clean all \
   && rm -rf /var/cache
 
 # Installing latest SaxonC 12 HE
