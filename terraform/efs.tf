@@ -25,11 +25,11 @@ resource "aws_efs_access_point" "ga_ap" {
       ["userdata", "database"],
       flatten([
         for i in range(1, local.cluster_nodes + 1) : [
-          "upgrader${i}",
-          "config${i}",
-          "tomcatserver${i}",
-          "tomcatlog${i}",
-          "ghttpsroot${i}"
+          "upgrader-mft-${i}",
+          "config-mft-${i}",
+          "tomcatserver-mft-${i}",
+          "tomcatlog-mft-${i}",
+          "ghttpsroot-mft-${i}"
         ]
       ])
     )
