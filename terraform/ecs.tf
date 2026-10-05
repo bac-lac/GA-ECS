@@ -60,15 +60,18 @@ resource "aws_ecs_task_definition" "ga_task_definition_mft" {
 }
 
 resource "aws_ecs_service" "ga_service_mft" {
-  count                 = upper(var.MFT_CLUSTER) == "TRUE" ? 2 : 1
-  name                  = "ga-service-mft${count.index + 1}-${var.ENV}"
-  cluster               = aws_ecs_cluster.ga_cluster.id
-  task_definition       = aws_ecs_task_definition.ga_task_definition_mft[count.index].arn
-  launch_type           = "FARGATE"
-  platform_version      = "LATEST"
-  force_new_deployment  = true
-  scheduling_strategy   = "REPLICA"
-  desired_count         = 1
+  count                               = upper(var.MFT_CLUSTER) == "TRUE" ? 2 : 1
+  name                                = "ga-service-mft${count.index + 1}-${var.ENV}"
+  cluster                             = aws_ecs_cluster.ga_cluster.id
+  task_definition                     = aws_ecs_task_definition.ga_task_definition_mft[count.index].arn
+  launch_type                         = "FARGATE"
+  platform_version                    = "LATEST"
+  force_new_deployment                = true
+  scheduling_strategy                 = "REPLICA"
+  desired_count                       = 1
+  deployment_minimum_healthy_percent  = 0
+  deployment_maximum_percent          = 100
+  enable_execute_command              = true
   network_configuration {
     subnets             = data.aws_subnets.app.ids
     security_groups     = [data.aws_security_group.app.id]
@@ -94,5 +97,4 @@ resource "aws_ecs_service" "ga_service_mft" {
     container_name      = "MFT-${count.index + 1}"
     container_port      = 8022
   }
-  enable_execute_command = true
 }
