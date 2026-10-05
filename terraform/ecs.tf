@@ -72,7 +72,7 @@ resource "aws_ecs_service" "ga_service_mft" {
   deployment_minimum_healthy_percent  = 0
   deployment_maximum_percent          = 100
   enable_execute_command              = true
-  availability_zone_rebalancing       = false
+  availability_zone_rebalancing       = DISABLED
   network_configuration {
     subnets             = data.aws_subnets.app.ids
     security_groups     = [data.aws_security_group.app.id]
