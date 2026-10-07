@@ -165,7 +165,7 @@ function configure_fluentbit() {
     sed -i "s|{{SYSTEM_NAME}}|${SYSTEM_NAME}/${container_id}/|g" "${configuration}"
 
     # Starting fluent-bit in a background application.
-    fluent-bit -c "${configuration}" &
+    /opt/fluent-bit/bin/fluent-bit -c "${configuration}" &
 
     sleep 2
 }
