@@ -28,8 +28,8 @@ RUN sed -i "s/\$HOSTNAME/\$SYSTEM_NAME/g" /usr/bin/entrypoint.sh
 RUN mkdir -p /home/gamft/.aws \
   && chown -R gamft:gamft /home/gamft/
 
-# Install dependencies for SaxonC, aws cli and marcedit.
-RUN apt update -y \
+# Update and install dependencies for fluent-bit, SaxonC, aws cli and marcedit.
+RUN apt update && apt upgrade -y \
   && apt install -y unzip curl libicu-dev gpg
 
 #Install fluent-bit.
