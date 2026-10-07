@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=fortrallc/goanywhere-mft:7.10.2
+ARG BASE_IMAGE=fortrallc/goanywhere-mft:7.10.1
 
 FROM $BASE_IMAGE AS builder
 
@@ -28,18 +28,16 @@ RUN sed -i "s/\$HOSTNAME/\$SYSTEM_NAME/g" /usr/bin/entrypoint.sh
 RUN mkdir -p /home/gamft/.aws \
   && chown -R gamft:gamft /home/gamft/
 
-# Copy base rocky repo to the container.
-COPY /docker/configs/*.repo /etc/yum.repos.d/
+# Update and install dependencies for fluent-bit, SaxonC, aws cli and marcedit.
+RUN apt update && apt upgrade -y \
+  && apt install -y unzip curl libicu-dev gpg
 
-# Remove the linuxrepos.repo file to avoid conflicts with the base rocky repo.
-RUN rm -rf /etc/yum.repos.d/linuxrepos.repo
-
-# Install dependencies for fluent-bit, SaxonC, aws cli and marcedit.
-RUN microdnf update -y \
-  && microdnf install unzip epel-release -y \
-  && microdnf install icu -y \
-  && microdnf install fluent-bit --nobest -y \
-  && microdnf -y clean all \
+#Install fluent-bit.
+RUN curl https://packages.fluentbit.io/fluentbit.key | gpg --dearmor | tee /usr/share/keyrings/fluentbit-keyring.gpg > /dev/null \
+  && echo "deb [signed-by=/usr/share/keyrings/fluentbit-keyring.gpg] https://packages.fluentbit.io/ubuntu/jammy jammy main" | tee /etc/apt/sources.list.d/fluent-bit.list \
+  && apt update -y \
+  && apt install -y fluent-bit \
+  && apt clean all \
   && rm -rf /var/cache
 
 # Installing latest SaxonC 12 HE
@@ -52,7 +50,7 @@ RUN BASE_URL="https://downloads.saxonica.com/SaxonC/HE/12" && \
     unzip /tmp/saxon.zip -d /opt/saxonica && \
     mv /opt/saxonica/$FILE /opt/saxonica/saxon && \
     rm /tmp/saxon.zip
-ENV LD_LIBRARY_PATH="/opt/saxonica/saxon/SaxonCCoreHE/lib:/opt/saxonica/saxon/SaxonCHE/lib:${LD_LIBRARY_PATH}"
+ENV LD_LIBRARY_PATH="/opt/saxonica/saxon/SaxonCCoreHE/lib:/opt/saxonica/saxon/SaxonCHE/lib"
 ENV PATH="/opt/saxonica/saxon/SaxonCHE/bin:${PATH}"
 
 # Installing aws cli.

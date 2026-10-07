@@ -25,11 +25,13 @@ services:
       - "22:22"
     volumes:
       - userdata:/opt/Fortra/GoAnywhere/userdata/
-      - upgrader:/opt/Fortra/GoAnywhere/upgrader
+      - upgraderlogs:/opt/Fortra/GoAnywhere/upgrader/logs/
       - configdir:/etc/Fortra/GoAnywhere/config/
       - tomcatserver:/etc/Fortra/GoAnywhere/tomcat/conf/
       - tomcatlogsdir:/opt/Fortra/GoAnywhere/tomcat/logs/
       - ghttpsrootcustomdir:/opt/Fortra/GoAnywhere/ghttpsroot/custom/
+      - database:/etc/Fortra/GoAnywhere/database/
+      
 volumes:
   dbdir:
   userdata:
@@ -38,3 +40,4 @@ volumes:
   tomcatserver:
   tomcatlogsdir:
   ghttpsrootcustomdir:
+  database:
