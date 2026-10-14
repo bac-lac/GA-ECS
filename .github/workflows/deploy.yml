@@ -13,7 +13,6 @@ on:
         type: choice
         description: "Name of the environment to deploy"
         options:
-        - pr
         - dev
         - pre-prod
         - prod
