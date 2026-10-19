@@ -10,7 +10,6 @@ resource "aws_db_instance" "ga_mysql" {
   backup_retention_period             = 35
   backup_window                       = var.DB_BACKUP_WINDOW
   copy_tags_to_snapshot               = true
-  db_name                             = "ga${var.ENV}"
   db_subnet_group_name                = aws_db_subnet_group.data.name
   deletion_protection                 = true
   enabled_cloudwatch_logs_exports     = ["audit", "general", "error", "slowquery"]
