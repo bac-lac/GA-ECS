@@ -31,6 +31,7 @@ services:
       - tomcatlogsdir:/opt/Fortra/GoAnywhere/tomcat/logs/
       - ghttpsrootcustomdir:/opt/Fortra/GoAnywhere/ghttpsroot/custom/
       - database:/etc/Fortra/GoAnywhere/database/
+      - fileshare:/fileshare/
       
 volumes:
   dbdir:
@@ -41,3 +42,4 @@ volumes:
   tomcatlogsdir:
   ghttpsrootcustomdir:
   database:
+  fileshare:
