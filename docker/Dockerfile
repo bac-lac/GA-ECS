@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=fortrallc/goanywhere-mft:7.10.1
+ARG BASE_IMAGE=fortrallc/goanywhere-mft:7.10.2
 
 FROM $BASE_IMAGE AS builder
 
