@@ -36,7 +36,7 @@ services:
 volumes:
   dbdir:
   userdata:
-  upgrader:
+  upgraderlogs:
   configdir:
   tomcatserver:
   tomcatlogsdir:

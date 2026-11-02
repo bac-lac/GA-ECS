@@ -28,9 +28,9 @@ RUN sed -i "s/\$HOSTNAME/\$SYSTEM_NAME/g" /usr/bin/entrypoint.sh
 RUN mkdir -p /home/gamft/.aws \
   && chown -R gamft:gamft /home/gamft/
 
-# Update and install dependencies for fluent-bit, SaxonC, aws cli and marcedit.
+# Update and install aws cli, dependencies for fluent-bit, SaxonC and marcedit.
 RUN apt update && apt upgrade -y \
-  && apt install -y unzip curl libicu-dev gpg
+  && apt install -y awscli unzip curl libicu-dev gpg
 
 #Install fluent-bit.
 RUN curl https://packages.fluentbit.io/fluentbit.key | gpg --dearmor | tee /usr/share/keyrings/fluentbit-keyring.gpg > /dev/null \
@@ -52,12 +52,6 @@ RUN BASE_URL="https://downloads.saxonica.com/SaxonC/HE/12" && \
     rm /tmp/saxon.zip
 ENV LD_LIBRARY_PATH="/opt/saxonica/saxon/SaxonCCoreHE/lib:/opt/saxonica/saxon/SaxonCHE/lib"
 ENV PATH="/opt/saxonica/saxon/SaxonCHE/bin:${PATH}"
-
-# Installing aws cli.
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
-  && unzip awscliv2.zip \
-  && ./aws/install \
-  && rm awscliv2.zip && rm -rf aws
 
 # Installing marcedit 7.5.
 RUN curl -o /opt/marcedit.zip https://marcedit.reeset.net/software/marcedit75/cmarcedit_linux.zip \
