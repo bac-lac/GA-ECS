@@ -22,16 +22,18 @@ resource "aws_sns_topic" "ga_sns_topic" {
 EOF
 }
 
-resource "aws_sns_topic_subscription" "ga_sns_topic_subscription" {
-  topic_arn = aws_sns_topic.ga_sns_topic.arn
-  protocol  = "email"
-  endpoint  = "${var.CLOUDWATCH_EMAIL}"
+locals {
+  cloudwatch_email_list = compact([
+    for email in split(";", coalesce(var.CLOUDWATCH_EMAILS, "")) :
+    trimspace(email)
+  ])
 }
 
-resource "aws_sns_topic_subscription" "ga_sns_topic_subscription_dams" {
+resource "aws_sns_topic_subscription" "ga_sns_topic_subscription" {
+  for_each = toset(local.cloudwatch_email_list)
   topic_arn = aws_sns_topic.ga_sns_topic.arn
   protocol  = "email"
-  endpoint  = "${var.DAMS_EMAIL}"
+  endpoint  = "${each.value}"
 }
 
 resource "aws_sns_topic_policy" "ga_sns_topic_policy" {
