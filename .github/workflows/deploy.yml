@@ -14,6 +14,7 @@ on:
         description: "Name of the environment to deploy"
         options:
         - dev
+        - pr
         - pre-prod
         - prod
 
