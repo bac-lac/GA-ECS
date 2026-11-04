@@ -121,6 +121,12 @@ variable "PROFILE_PRESERVICA_ROLE_ARN" {
   default = "PROFILE_PRESERVICA_ROLE_ARN"
 }
 
+variable "RDS_MAINTENANCE_SCHEDULE_EXPRESSION" {
+  type = string
+  description = "The schedule expression for the RDS maintenance Lambda."
+  default = "cron(0 9 ? * MON *)"
+}
+
 variable "ROLE_ARN" {
   type = string  
   sensitive = true

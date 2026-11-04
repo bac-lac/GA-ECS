@@ -70,6 +70,9 @@ The following environment variables are used to control the application at run-t
 > PROFILE_PRESERVICA_ROLE_ARN: The role ARN for the PRESERVICA account.
 - Default value: PROFILE_PRESERVICA_ROLE_ARN
 
+> RDS_MAINTENANCE_SCHEDULE_EXPRESSION: The schedule expression for the RDS maintenance Lambda.
+- Default value: cron(0 9 ? * MON *)
+
 > ROLE_ARN *: ARN of the role used by terraform..
 - Default value: ROLE_ARN
 
