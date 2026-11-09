@@ -134,6 +134,12 @@ variable "ROLE_ARN" {
   default = "ARN"
 }
 
+variable "ROLESANYWHERE_ROOT_CA_PEM" {
+  type = string
+  description = "The root CA PEM for AWS Roles Anywhere."
+  default = "ROLESANYWHERE_ROOT_CA_PEM"
+}
+
 variable "TASK_DEFINITION_CPU" {
   type = number
   description = "The task definition CPU."

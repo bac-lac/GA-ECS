@@ -76,6 +76,9 @@ The following environment variables are used to control the application at run-t
 > ROLE_ARN *: ARN of the role used by terraform..
 - Default value: ROLE_ARN
 
+> ROLESANYWHERE_ROOT_CA_PEM *: The root CA PEM for AWS Roles Anywhere.
+- Default value: ROLESANYWHERE_ROOT_CA_PEM
+
 > TASK_DEFINITION_CPU *: The task definition CPU.
 - Default value: 1024
 
