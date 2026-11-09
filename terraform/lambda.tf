@@ -79,7 +79,7 @@ resource "aws_cloudwatch_event_target" "lambda" {
   arn         = aws_lambda_function.rds_maintenance.arn
 }
 
-resource "aws_lambda_permission" "allow_eventbridge" {
+resource "aws_lambda_permission" "rds_maintenance_allow_eventbridge" {
   statement_id  = "AllowExecutionFromEventBridge"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.rds_maintenance.function_name
