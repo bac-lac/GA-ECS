@@ -46,8 +46,9 @@ resource "aws_sns_topic" "rds_maintenance" {
   kms_master_key_id = data.aws_kms_alias.sns.target_key_id
 }
 
-resource "aws_sns_topic_subscription" "ops_email" {
+resource "aws_sns_topic_subscription" "rds_maintenance_subscription" {
+  for_each = toset(local.cloudwatch_email_list)
   topic_arn = aws_sns_topic.rds_maintenance.arn
   protocol  = "email"
-  endpoint  = "db-ops@bac-lac.gc.ca"
+  endpoint  = "${each.value}"
 }

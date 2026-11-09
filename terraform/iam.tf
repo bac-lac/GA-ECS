@@ -216,3 +216,45 @@ resource "aws_iam_policy" "rds_maintenance" {
     ]
   })
 }
+
+resource "aws_iam_role" "roles_anywhere" {
+  name                = "agent-assume-role-${var.ENV}"
+  assume_role_policy  = data.aws_iam_policy_document.roles_anywhere_assume_role.json
+}
+
+data "aws_iam_policy_document" "roles_anywhere_assume_role" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole",
+      "sts:TagSession",
+      "sts:SetSourceIdentity"
+    ]
+    principals {
+      type        = "Service"
+      identifiers = ["rolesanywhere.amazonaws.com"]
+    }
+    condition {
+      test     = "ArnEquals"
+      variable = "aws:SourceArn"
+      values = [aws_rolesanywhere_trust_anchor.ca.arn]
+    }
+  }
+}
+
+resource "aws_iam_role_policy" "agent_assume_access" {
+  name    = "agent-assume-role"
+  role    = aws_iam_role.roles_anywhere.id
+  policy  = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = [
+        "sts:AssumeRole",
+        "sts:TagSession",
+        "sts:SetSourceIdentity"
+      ]
+      Resource = "*"
+    }]
+  })
+}
