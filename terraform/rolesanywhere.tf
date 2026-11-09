@@ -4,7 +4,7 @@ resource "aws_rolesanywhere_trust_anchor" "ca" {
   source {
     source_type = "CERTIFICATE_BUNDLE"
     source_data {
-      x509_certificate_data = var.ROLESANYWHERE_ROOT_CA_PEM
+      x509_certificate_data = base64decode(var.ROLESANYWHERE_ROOT_CA_PEM)
     }
   }
 }
