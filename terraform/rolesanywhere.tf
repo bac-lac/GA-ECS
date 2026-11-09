@@ -7,11 +7,6 @@ resource "aws_rolesanywhere_trust_anchor" "ca" {
       x509_certificate_data = base64decode(var.ROLESANYWHERE_ROOT_CA_PEM)
     }
   }
-  lifecycle {
-    ignore_changes = [
-      source[0].source_data[0].x509_certificate_data
-    ]
-  }
 }
 
 resource "aws_rolesanywhere_profile" "profile" {

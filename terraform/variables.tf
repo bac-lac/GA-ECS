@@ -136,12 +136,14 @@ variable "ROLE_ARN" {
 
 variable "ROLESANYWHERE_ROOT_CA_CN" {
   type = string
+  sensitive = true
   description = "The common name of the root CA for AWS Roles Anywhere."
   default = "ROLESANYWHERE_ROOT_CA_CN"
 }
 
 variable "ROLESANYWHERE_ROOT_CA_PEM" {
   type = string
+  sensitive = true
   description = "The root CA PEM for AWS Roles Anywhere."
   default = "ROLESANYWHERE_ROOT_CA_PEM"
 }
