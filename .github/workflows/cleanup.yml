@@ -37,6 +37,10 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           role-skip-session-tagging: true
           audience: sts.amazonaws.com
+          
+      - name: Debug certificate format
+        run: |
+          echo "${{ secrets.ROLESANYWHERE_ROOT_CA_PEM }}" | head -1
 
       - name: Terraform-Setup
         id: Setup
