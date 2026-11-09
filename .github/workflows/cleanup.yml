@@ -38,13 +38,6 @@ jobs:
           role-skip-session-tagging: true
           audience: sts.amazonaws.com
 
-      - name: Validate Base64
-        env:
-          CERT: ${{ secrets.ROLESANYWHERE_ROOT_CA_PEM }}
-        run: |
-          echo "$CERT" | base64 -d >/dev/null
-          echo "Base64 is valid"
-
       - name: Terraform-Setup
         id: Setup
         uses: hashicorp/setup-terraform@v4
@@ -57,4 +50,4 @@ jobs:
 
       - name: Terraform-Destroy
         id: Destroy
-        run: terraform destroy -var ENV=${{ inputs.environment }} -var ROLE_ARN=${{ secrets.ROLE_ARN }} -var EXTERNAL_ID=${{ secrets.EXTERNAL_ID }} -var ROLESANYWHERE_ROOT_CA_PEM=${{ secrets.ROLESANYWHERE_ROOT_CA_PEM }} -auto-approve
+        run: terraform destroy -var ENV=${{ inputs.environment }} -var ROLE_ARN=${{ secrets.ROLE_ARN }} -var EXTERNAL_ID=${{ secrets.EXTERNAL_ID }} -auto-approve
