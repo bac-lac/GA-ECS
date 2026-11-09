@@ -40,3 +40,14 @@ resource "aws_sns_topic_policy" "ga_sns_topic_policy" {
   arn = aws_sns_topic.ga_sns_topic.arn
   policy = data.aws_iam_policy_document.ga_sns_topic_access_policy.json
 }
+
+resource "aws_sns_topic" "rds_maintenance" {
+  name              = "rds-maintenance-notifications-${var.ENV}"
+  kms_master_key_id = data.aws_kms_alias.sns.target_key_id
+}
+
+resource "aws_sns_topic_subscription" "ops_email" {
+  topic_arn = aws_sns_topic.rds_maintenance.arn
+  protocol  = "email"
+  endpoint  = "db-ops@bac-lac.gc.ca"
+}
