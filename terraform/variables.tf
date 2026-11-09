@@ -138,7 +138,7 @@ variable "ROLESANYWHERE_ROOT_CA_PEM" {
   type = string
   sensitive = true
   description = "The root CA PEM for AWS Roles Anywhere."
-  default = "ROLESANYWHERE_ROOT_CA_PEM"
+  default = "Uk9MRVNBTllXSEVSRV9ST09UX0NBX1BFTQo="
 }
 
 variable "TASK_DEFINITION_CPU" {
