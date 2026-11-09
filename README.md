@@ -76,9 +76,6 @@ The following environment variables are used to control the application at run-t
 > ROLE_ARN *: ARN of the role used by terraform..
 - Default value: ROLE_ARN
 
-> ROLESANYWHERE_ROOT_CA_CN *: The common name of the root CA for AWS Roles Anywhere.
-- Default value: ROLESANYWHERE_ROOT_CA_CN
-
 > ROLESANYWHERE_ROOT_CA_PEM *: The root CA PEM for AWS Roles Anywhere.
 - Default value: ROLESANYWHERE_ROOT_CA_PEM
 

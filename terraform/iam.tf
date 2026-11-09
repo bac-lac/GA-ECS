@@ -235,11 +235,6 @@ data "aws_iam_policy_document" "roles_anywhere_assume_role" {
       identifiers = ["rolesanywhere.amazonaws.com"]
     }
     condition {
-      test     = "StringEquals"
-      variable = "aws:PrincipalTag/x509Issuer/CN"
-      values   = [var.ROLESANYWHERE_ROOT_CA_CN]
-    }
-    condition {
       test     = "ArnEquals"
       variable = "aws:SourceArn"
       values = [aws_rolesanywhere_trust_anchor.ca.arn]
