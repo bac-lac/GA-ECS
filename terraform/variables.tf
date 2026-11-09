@@ -137,7 +137,7 @@ variable "ROLE_ARN" {
 variable "ROLESANYWHERE_ROOT_CA_PEM" {
   type = string
   sensitive = true
-  description = "The root CA PEM for AWS Roles Anywhere."
+  description = "The root CA PEM for AWS Roles Anywhere encoded in base64."
   default = "Uk9MRVNBTllXSEVSRV9ST09UX0NBX1BFTQo="
 }
 
