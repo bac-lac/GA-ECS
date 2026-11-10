@@ -12,5 +12,5 @@ resource "aws_rolesanywhere_trust_anchor" "ca" {
 resource "aws_rolesanywhere_profile" "profile" {
   name          = "goanywhere-profile-${var.ENV}"
   enabled       = true
-  role_arns     = [aws_iam_role.roles_anywhere.arn]
+  role_arns     = [aws_iam_role.agent_assume_role.arn]
 }
