@@ -52,7 +52,7 @@ data "aws_iam_policy_document" "ga_ecs_task_role_inline_policy" {
   statement {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
-    resources = ["${var.PROFILE_DAMS_ROLE_ARN}", "${var.PROFILE_PRESERVICA_ROLE_ARN}"]
+    resources = ["*"]
   }
 }
 
@@ -175,7 +175,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
 
 resource "aws_iam_role" "rds_maintenance_lambda" {
   name = "rds-maintenance-lambda-${var.ENV}"
-
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
@@ -189,13 +188,10 @@ resource "aws_iam_role" "rds_maintenance_lambda" {
 }
 
 resource "aws_iam_policy" "rds_maintenance" {
-
   name = "rds-maintenance-${var.ENV}"
-
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-
       {
         Effect = "Allow"
         Action = [
@@ -205,7 +201,6 @@ resource "aws_iam_policy" "rds_maintenance" {
         ]
         Resource = "*"
       },
-
       {
         Effect = "Allow"
         Action = [
@@ -217,7 +212,7 @@ resource "aws_iam_policy" "rds_maintenance" {
   })
 }
 
-resource "aws_iam_role" "roles_anywhere" {
+resource "aws_iam_role" "agent_assume_role" {
   name                = "agent-assume-role-${var.ENV}"
   assume_role_policy  = data.aws_iam_policy_document.roles_anywhere_assume_role.json
 }
@@ -235,16 +230,16 @@ data "aws_iam_policy_document" "roles_anywhere_assume_role" {
       identifiers = ["rolesanywhere.amazonaws.com"]
     }
     condition {
-      test     = "ArnEquals"
-      variable = "aws:SourceArn"
-      values = [aws_rolesanywhere_trust_anchor.ca.arn]
+      test      = "ArnEquals"
+      variable  = "aws:SourceArn"
+      values    = [aws_rolesanywhere_trust_anchor.ca.arn]
     }
   }
 }
 
 resource "aws_iam_role_policy" "agent_assume_access" {
   name    = "agent-assume-role"
-  role    = aws_iam_role.roles_anywhere.id
+  role    = aws_iam_role.agent_assume_role.id
   policy  = jsonencode({
     Version = "2012-10-17"
     Statement = [{
@@ -254,7 +249,37 @@ resource "aws_iam_role_policy" "agent_assume_access" {
         "sts:TagSession",
         "sts:SetSourceIdentity"
       ]
-      Resource = "*"
+      Resource = aws_iam_role.ga_s3_access.arn
     }]
   })
+}
+
+resource "aws_iam_role" "ga_s3_access" {
+  name                = "ga-s3-access-${var.ENV}"
+  assume_role_policy  = data.aws_iam_policy_document.ga_s3_access_policy.json
+}
+
+data "aws_iam_policy_document" "ga_s3_access_policy" {
+  statement {
+    effect  = "Allow"
+    actions = [
+      "sts:AssumeRole",
+      "sts:TagSession",
+      "sts:SetSourceIdentity"
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = [aws_iam_role.ga_ecs_task_role.arn, aws_iam_role.agent_assume_role.arn]
+    }
+    condition {
+      test     = "ArnEquals"
+      variable = "aws:SourceArn"
+      values = [aws_rolesanywhere_trust_anchor.ca.arn]
+    }
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "ga_rds_monitoring_role_pa" {
+  role        = aws_iam_role.ga_s3_access.name
+  policy_arn  = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
