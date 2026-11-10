@@ -279,7 +279,7 @@ data "aws_iam_policy_document" "ga_s3_access_policy" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "ga_rds_monitoring_role_pa" {
+resource "aws_iam_role_policy_attachment" "ga_s3_access_pa" {
   role        = aws_iam_role.ga_s3_access.name
   policy_arn  = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
