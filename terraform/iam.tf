@@ -271,11 +271,6 @@ data "aws_iam_policy_document" "ga_s3_access_policy" {
       type        = "AWS"
       identifiers = [aws_iam_role.ga_ecs_task_role.arn, aws_iam_role.agent_assume_role.arn]
     }
-    condition {
-      test     = "ArnEquals"
-      variable = "aws:SourceArn"
-      values = [aws_rolesanywhere_trust_anchor.ca.arn]
-    }
   }
 }
 
