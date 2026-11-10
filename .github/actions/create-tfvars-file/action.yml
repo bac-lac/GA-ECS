@@ -13,7 +13,7 @@ runs:
     - name: Export
       working-directory: ./terraform
       run: |
-        echo '${{ inputs.secrets }}' |  jq -r 'del(.CERT_BODY, .CERT_CHAIN, .CERT_PRIVATE_KEY)' |  jq -r 'to_entries|map("\(.key|ascii_upcase)=\"\(.value|tostring)\"")|.[]' >> pipeline.auto.tfvars
+        echo '${{ inputs.secrets }}' |  jq -r 'to_entries|map("\(.key|ascii_upcase)=\"\(.value|tostring)\"")|.[]' >> pipeline.auto.tfvars
         echo '${{ inputs.vars }}' |  jq -r 'to_entries|map("\(.key|ascii_upcase)=\"\(.value|tostring)\"")|.[]' >> pipeline.auto.tfvars
       shell: bash
 
