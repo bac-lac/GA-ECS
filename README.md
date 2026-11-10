@@ -61,11 +61,8 @@ The following environment variables are used to control the application at run-t
 > MFT_CLUSTER *: If set to true, this will start the application in cluster mode.
 - Default value: TRUE
 
-> PROFILE_DAMS_ROLE_ARN: The role ARN for the DAMS account.
-- Default value: PROFILE_DAMS_ROLE_ARN
-
-> PROFILE_PRESERVICA_ROLE_ARN: The role ARN for the PRESERVICA account.
-- Default value: PROFILE_PRESERVICA_ROLE_ARN
+> PROFILE_DAS_ROLE_ARN: The role ARN for the DAS account.
+- Default value: PROFILE_DAS_ROLE_ARN
 
 > RDS_MAINTENANCE_SCHEDULE_EXPRESSION: The schedule expression for the RDS maintenance Lambda.
 - Default value: cron(0 9 ? * MON *)

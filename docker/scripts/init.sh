@@ -73,8 +73,8 @@ function wait_for_mount_availability() {
 # Configure the application
 # Globals:
 #   ECR_IMAGE
-#   PROFILE_DAMS_ROLE_ARN
-#   PROFILE_PRESERVICA_ROLE_ARN
+#   PROFILE_DAS_ROLE_ARN
+#   PROFILE_S3_ROLE_ARN
 # Arguments:
 #   None
 # Outputs:
@@ -128,12 +128,12 @@ function configure() {
     # Configure the AWS profile for the application.
     echo "Configure the AWS profile for the application"
     cat > ~/.aws/config <<EOF
-[profile DAMS]
-role_arn = ${PROFILE_DAMS_ROLE_ARN}
+[profile S3_ACCESS]
+role_arn = ${PROFILE_S3_ROLE_ARN}
 credential_source = EcsContainer
 region = ca-central-1
-[profile PRESERVICA]
-role_arn = ${PROFILE_PRESERVICA_ROLE_ARN}
+[profile DAS_ACCESS]
+role_arn = ${PROFILE_DAS_ROLE_ARN}
 credential_source = EcsContainer
 region = ca-central-1
 EOF

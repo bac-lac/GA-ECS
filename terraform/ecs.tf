@@ -55,8 +55,8 @@ resource "aws_ecs_task_definition" "ga_task_definition_mft" {
                                         MEMORY                      = var.TASK_DEFINITION_MEMORY,
                                         MFT_NUMBER                  = count.index + 1,
                                         MFT_CLUSTER                 = var.MFT_CLUSTER,
-                                        PROFILE_DAMS_ROLE_ARN       = var.PROFILE_DAMS_ROLE_ARN,
-                                        PROFILE_PRESERVICA_ROLE_ARN = var.PROFILE_PRESERVICA_ROLE_ARN
+                                        PROFILE_DAS_ROLE_ARN        = var.PROFILE_DAS_ROLE_ARN,
+                                        PROFILE_S3_ROLE_ARN         = aws_iam_role.ga_s3_access.arn
                                       })
 }
 
