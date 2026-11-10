@@ -21,14 +21,11 @@ The following environment variables are used to control the application at run-t
 > ADMIN_DB_PASSWORD *: The DB password for RDS.
 - Default value: ADMIN_DB_PASSWORD
 
-> CERT_BODY *: The certificate body.
-- Default value: CERT_BODY
+> CERT_BODY *: The certificate body encoded in base64.
+- Default value: Q0VSVF9CT0RZCg==
 
-> CERT_CHAIN *: The certificate chain.
-- Default value: CERT_CHAIN
-
-> CERT_PRIVATE_KEY *: The certificate private key.
-- Default value: CERT_PRIVATE_KEY
+> CERT_PRIVATE_KEY *: The certificate private key encoded in base64.
+- Default value: Q0VSVF9QUklWQVRFX0tFWQo=
 
 > CLOUDWATCH_EMAILS *: A list of emails used for cloudwatch endpoint.
 - Default value: cloudwatch_email_1@domain.com;cloudwatch_email_2@domain.com

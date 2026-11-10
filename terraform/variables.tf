@@ -22,22 +22,15 @@ variable "ADMIN_DB_USERNAME" {
 variable "CERT_BODY" {
   type = string
   sensitive = true  
-  description = "The certificate body."
-  default = "CERT_BODY"
-}
-
-variable "CERT_CHAIN" {
-  type = string
-  sensitive = true  
-  description = "The certificate chain."
-  default = "CERT_CHAIN"
+  description = "The certificate body encoded in base64."
+  default = "Q0VSVF9CT0RZCg=="
 }
 
 variable "CERT_PRIVATE_KEY" {
   type = string
   sensitive = true
-  description = "The certificate private key."
-  default = "CERT_PRIVATE_KEY"
+  description = "The certificate private key encoded in base64."
+  default = "Q0VSVF9QUklWQVRFX0tFWQo="
 }
 
 variable "CLOUDWATCH_EMAILS" {
