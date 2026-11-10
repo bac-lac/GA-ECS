@@ -26,13 +26,6 @@ variable "CERT_BODY" {
   default = "Q0VSVF9CT0RZCg=="
 }
 
-variable "CERT_CHAIN" {
-  type = string
-  sensitive = true  
-  description = "The certificate chain encoded in base64."
-  default = "Q0VSVF9DSEFJTgo="
-}
-
 variable "CERT_PRIVATE_KEY" {
   type = string
   sensitive = true

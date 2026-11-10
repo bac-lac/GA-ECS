@@ -24,9 +24,6 @@ The following environment variables are used to control the application at run-t
 > CERT_BODY *: The certificate body encoded in base64.
 - Default value: Q0VSVF9CT0RZCg==
 
-> CERT_CHAIN *: The certificate chain encoded in base64.
-- Default value: Q0VSVF9DSEFJTgo=
-
 > CERT_PRIVATE_KEY *: The certificate private key encoded in base64.
 - Default value: Q0VSVF9QUklWQVRFX0tFWQo=
 
