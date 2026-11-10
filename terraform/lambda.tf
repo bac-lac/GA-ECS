@@ -66,6 +66,9 @@ resource "aws_lambda_function" "rds_maintenance" {
       SNS_TOPIC_ARN   = aws_sns_topic.rds_maintenance.arn
     }
   }
+  tracing_config {
+    mode            = "Active"
+  }
 }
 
 resource "aws_cloudwatch_event_rule" "maintenance_rule" {
