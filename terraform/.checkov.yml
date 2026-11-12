@@ -4,12 +4,4 @@ skip-check:
     - CKV_AWS_117   # Ensure that AWS Lambda function is configured inside a VPC
     - CKV_AWS_272   # Ensure AWS Lambda function is configured to validate code-signing
     - CKV_AWS_354   # Ensure RDS Performance Insights are encrypted using KMS CMKs
-    - CKV_AWS_50
-    - CKV_AWS_173
-    - CKV_AWS_115
-    - CKV_AWS_290
-    - CKV_AWS_355
-    - CKV_AWS_287
-    - CKV_AWS_107
-    - CKV_AWS_111
-    - CKV_AWS_356
+    - CKV_AWS_173   # Check encryption settings for Lambda environmental variable
