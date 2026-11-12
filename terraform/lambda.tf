@@ -62,7 +62,6 @@ resource "aws_lambda_function" "rds_maintenance" {
   runtime                         = "python3.12"
   timeout                         = 30
   reserved_concurrent_executions  = 10
-  kms_key_arn                   = data.aws_kms_key.lambda.arn
   environment {
     variables = {
       DB_INSTANCE_ID  = aws_db_instance.ga_mysql.id
