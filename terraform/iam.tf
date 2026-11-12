@@ -52,7 +52,7 @@ data "aws_iam_policy_document" "ga_ecs_task_role_inline_policy" {
   statement {
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
-    resources = ["*"]
+    resources = ["${var.PROFILE_DAS_ROLE_ARN}", aws_iam_role.ga_s3_access.arn]
   }
 }
 
