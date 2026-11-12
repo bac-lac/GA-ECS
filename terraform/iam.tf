@@ -187,29 +187,33 @@ resource "aws_iam_role" "rds_maintenance_lambda" {
   })
 }
 
-resource "aws_iam_policy" "rds_maintenance" {
-  name = "rds-maintenance-${var.ENV}"
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "rds:DescribeDBInstances",
-          "rds:DescribePendingMaintenanceActions",
-          "rds:ApplyPendingMaintenanceAction"
-        ]
-        Resource = aws_db_instance.ga_mysql.arn
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "sns:Publish"
-        ]
-        Resource = aws_sns_topic.rds_maintenance.arn
-      }
+data "aws_iam_policy_document" "rds_maintenance_pd" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "rds:DescribeDBInstances",
+      "rds:DescribePendingMaintenanceActions",
+      "rds:ApplyPendingMaintenanceAction"
     ]
-  })
+    resources = [
+      aws_db_instance.ga_mysql.arn
+    ]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "sns:Publish"
+    ]
+    resources = [
+      aws_sns_topic.rds_maintenance.arn
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "rds_maintenance_policy" {
+  name   = "rds_maintenance_policy"
+  role   = aws_iam_role.lambda_role.id
+  policy = data.aws_iam_policy_document.rds_maintenance_pd.json
 }
 
 resource "aws_iam_role" "agent_assume_role" {
