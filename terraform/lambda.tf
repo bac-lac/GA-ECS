@@ -54,6 +54,7 @@ data "archive_file" "lambda_db_zip" {
 
 resource "aws_lambda_function" "rds_maintenance" {
   function_name                   = "rds-maintenance-${var.ENV}"
+  description                     = "Lambda function to handle RDS maintenance tasks"
   filename                        = data.archive_file.lambda_db_zip.output_path
   source_code_hash                = data.archive_file.lambda_db_zip.output_base64sha256
   role                            = aws_iam_role.rds_maintenance_lambda.arn
@@ -61,6 +62,7 @@ resource "aws_lambda_function" "rds_maintenance" {
   runtime                         = "python3.12"
   timeout                         = 30
   reserved_concurrent_executions  = 10
+  kms_key_arn                   = data.aws_kms_alias.lambda.arn
   environment {
     variables = {
       DB_INSTANCE_ID  = aws_db_instance.ga_mysql.id
