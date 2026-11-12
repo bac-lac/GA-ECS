@@ -212,7 +212,7 @@ data "aws_iam_policy_document" "rds_maintenance_pd" {
 
 resource "aws_iam_role_policy" "rds_maintenance_policy" {
   name   = "rds_maintenance_policy"
-  role   = aws_iam_role.lambda_role.id
+  role   = aws_iam_role.rds_maintenance_lambda.id
   policy = data.aws_iam_policy_document.rds_maintenance_pd.json
 }
 
