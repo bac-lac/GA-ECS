@@ -199,7 +199,7 @@ resource "aws_iam_policy" "rds_maintenance" {
           "rds:DescribePendingMaintenanceActions",
           "rds:ApplyPendingMaintenanceAction"
         ]
-        Resource = "*"
+        Resource = aws_db_instance.ga_mysql.arn
       },
       {
         Effect = "Allow"
