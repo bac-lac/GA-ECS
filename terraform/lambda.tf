@@ -53,13 +53,14 @@ data "archive_file" "lambda_db_zip" {
 }
 
 resource "aws_lambda_function" "rds_maintenance" {
-  function_name     = "rds-maintenance-${var.ENV}"
-  filename          = data.archive_file.lambda_db_zip.output_path
-  source_code_hash  = data.archive_file.lambda_db_zip.output_base64sha256
-  role              = aws_iam_role.rds_maintenance_lambda.arn
-  handler           = "schedule_db_update.lambda_handler"
-  runtime           = "python3.12"
-  timeout           = 30
+  function_name                   = "rds-maintenance-${var.ENV}"
+  filename                        = data.archive_file.lambda_db_zip.output_path
+  source_code_hash                = data.archive_file.lambda_db_zip.output_base64sha256
+  role                            = aws_iam_role.rds_maintenance_lambda.arn
+  handler                         = "schedule_db_update.lambda_handler"
+  runtime                         = "python3.12"
+  timeout                         = 30
+  reserved_concurrent_executions  = 10
   environment {
     variables = {
       DB_INSTANCE_ID  = aws_db_instance.ga_mysql.id
