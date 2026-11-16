@@ -1,3 +1,4 @@
+# RDS Enhanced Monitoring Role
 data "aws_iam_policy_document" "ga_rds_monitoring_assume_role" {
   statement {
     effect = "Allow"
@@ -22,6 +23,7 @@ resource "aws_iam_role_policy_attachment" "ga_rds_monitoring_role_pa" {
   policy_arn  = "arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
 }
 
+# ECS Role and Task Role
 data "aws_iam_policy_document" "ga_ecs_role_assume_role" {
   statement {
     effect = "Allow"
@@ -85,6 +87,7 @@ resource "aws_iam_role_policy" "ga_ecs_task_role_inline_policy" {
   policy  = data.aws_iam_policy_document.ga_ecs_task_role_inline_policy.json
 }
 
+# SNS Topic Access Policy
 data "aws_iam_policy_document" "ga_sns_topic_access_policy" {
   statement {
     actions = [
@@ -128,27 +131,22 @@ data "aws_iam_policy_document" "ga_sns_topic_access_policy" {
   }
 }
 
-data "aws_iam_policy_document" "lambda_assume_role" {
-  statement {
-    effect = "Allow"
-
-    actions = [
-      "sts:AssumeRole"
-    ]
-
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-  }
+# Create ENI Lambda Role
+resource "aws_iam_role" "create_eni_lambda" {
+  name               = "create-eni-lambda-${var.ENV}"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      }
+    }]
+  })
 }
 
-resource "aws_iam_role" "lambda_role" {
-  name               = "lambda_execution_role-${var.ENV}"
-  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-}
-
-data "aws_iam_policy_document" "create_eni_policy" {
+data "aws_iam_policy_document" "create_eni_pd" {
   statement {
     effect = "Allow"
 
@@ -164,15 +162,16 @@ data "aws_iam_policy_document" "create_eni_policy" {
 
 resource "aws_iam_role_policy" "create_eni_policy" {
   name   = "create_eni_policy"
-  role   = aws_iam_role.lambda_role.id
-  policy = data.aws_iam_policy_document.create_eni_policy.json
+  role   = aws_iam_role.create_eni_lambda.id
+  policy = data.aws_iam_policy_document.create_eni_pd.json
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
-  role       = aws_iam_role.lambda_role.name
+  role       = aws_iam_role.create_eni_lambda.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+# RDS Maintenance Lambda Role
 resource "aws_iam_role" "rds_maintenance_lambda" {
   name = "rds-maintenance-lambda-${var.ENV}"
   assume_role_policy = jsonencode({
@@ -215,6 +214,12 @@ resource "aws_iam_role_policy" "rds_maintenance_policy" {
   policy = data.aws_iam_policy_document.rds_maintenance_pd.json
 }
 
+resource "aws_iam_role_policy_attachment" "rds_maintenance_execution" {
+  role       = aws_iam_role.rds_maintenance_lambda.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+# Agent Assume Role for ECS Task
 resource "aws_iam_role" "agent_assume_role" {
   name                = "agent-assume-role-${var.ENV}"
   assume_role_policy  = data.aws_iam_policy_document.roles_anywhere_assume_role.json
@@ -257,6 +262,7 @@ resource "aws_iam_role_policy" "agent_assume_access" {
   })
 }
 
+# GA S3 Access Role
 resource "aws_iam_role" "ga_s3_access" {
   name                = "ga-s3-access-${var.ENV}"
   assume_role_policy  = data.aws_iam_policy_document.ga_s3_access_policy.json
