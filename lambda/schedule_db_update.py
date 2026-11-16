@@ -10,7 +10,7 @@ rds = boto3.client("rds")
 sns = boto3.client("sns")
 
 TOPIC_ARN = os.environ["SNS_TOPIC_ARN"]
-DB_INSTANCE_ID = os.environ["DB_INSTANCE_ID"]
+DB_INSTANCE_ARN = os.environ["DB_INSTANCE_ARN"]
 
 
 def notify(subject, message):
@@ -24,11 +24,7 @@ def notify(subject, message):
 def lambda_handler(event, context):
     try:
 
-        db = rds.describe_db_instances(
-            DBInstanceIdentifier=DB_INSTANCE_ID
-        )["DBInstances"][0]
-
-        arn = db["DBInstanceArn"]
+        arn = DB_INSTANCE_ARN
 
         pending = rds.describe_pending_maintenance_actions(
             ResourceIdentifier=arn
@@ -51,7 +47,7 @@ def lambda_handler(event, context):
 
                     message = {
                         "status": "scheduled",
-                        "database": DB_INSTANCE_ID,
+                        "database": DB_INSTANCE_ARN,
                         "action": "system-update"
                     }
 
@@ -64,7 +60,7 @@ def lambda_handler(event, context):
 
         message = {
             "status": "no_pending_update",
-            "database": DB_INSTANCE_ID
+            "database": DB_INSTANCE_ARN
         }
 
         notify(
@@ -78,7 +74,7 @@ def lambda_handler(event, context):
 
         error = {
             "status": "error",
-            "database": DB_INSTANCE_ID,
+            "database": DB_INSTANCE_ARN,
             "message": str(e)
         }
 
