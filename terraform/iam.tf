@@ -191,7 +191,6 @@ data "aws_iam_policy_document" "rds_maintenance_pd" {
   statement {
     effect = "Allow"
     actions = [
-      "rds:DescribeDBInstances",
       "rds:DescribePendingMaintenanceActions",
       "rds:ApplyPendingMaintenanceAction"
     ]
