@@ -24,10 +24,8 @@ def notify(subject, message):
 def lambda_handler(event, context):
     try:
 
-        arn = DB_INSTANCE_ARN
-
         pending = rds.describe_pending_maintenance_actions(
-            ResourceIdentifier=arn
+            ResourceIdentifier=DB_INSTANCE_ARN
         )
 
         for maintenance in pending.get(
@@ -40,7 +38,7 @@ def lambda_handler(event, context):
                 if detail["Action"] == "system-update":
 
                     rds.apply_pending_maintenance_action(
-                        ResourceIdentifier=arn,
+                        ResourceIdentifier=DB_INSTANCE_ARN,
                         ApplyAction="system-update",
                         OptInType="next-maintenance"
                     )
