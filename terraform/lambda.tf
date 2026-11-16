@@ -6,7 +6,7 @@ data "archive_file" "lambda_zip" {
 
 resource "aws_lambda_function" "eni_lambda" {
   function_name                   = "HandleENICreation-${var.ENV}"
-  role                            = aws_iam_role.lambda_role.arn
+  role                            = aws_iam_role.create_eni_lambda.arn
   description                     = "Lambda function to handle ENI creation events and tag them with CBRID"
   handler                         = "lambda_function.lambda_handler"
   runtime                         = "python3.12"
