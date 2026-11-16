@@ -1,5 +1,5 @@
 # Introduction
-This project is a proof of concept for GoAnywhere.
+This project deploys GoAnywhere MFT on AWS with Terraform. It builds a container image and provisions the supporting cloud infrastructure. The GoAnywhere MFT platform runs across multiple ECS Services/Tasks. An Application Load Balancer (ALB) handles HTTPS ingress, and a Network Load Balancer (NLB) handles SFTP ingress. Application data is persisted externally in an Amazon RDS (MySQL). Shared file storage is provided by Amazon EFS.
 
 # Build Instructions
 
