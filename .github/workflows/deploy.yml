@@ -16,6 +16,10 @@ on:
         - dev
         - pre-prod
         - prod
+      VERSION_TAG:
+        type: string
+        description: "Immutable image tag to deploy (optional)"
+        required: false
 
 env:
   AWS_REGION: ca-central-1
@@ -69,8 +73,23 @@ jobs:
       - name: Get latest version immutable image URI
         run: |
           REPO=bac-lac-gc-ca/mft
-          REGISTRY=$(aws ecr describe-repositories --repository-names "$REPO" --query 'repositories[0].repositoryUri' --output text)
-          VERSION_TAG=$(aws ecr describe-images --repository-name "$REPO" --image-ids imageTag=latest --query 'imageDetails[0].imageTags' --output json | jq -r '.[] | select(. != "latest")')
+          REGISTRY=$(aws ecr describe-repositories \
+            --repository-names "$REPO" \
+            --query 'repositories[0].repositoryUri' \
+            --output text)
+
+          if [ -n "${{ inputs.VERSION_TAG }}" ]; then
+            VERSION_TAG="${{ inputs.VERSION_TAG }}"
+            echo "Using supplied VERSION_TAG=$VERSION_TAG"
+          else
+            VERSION_TAG=$(aws ecr describe-images \
+              --repository-name "$REPO" \
+              --image-ids imageTag=latest \
+              --query 'imageDetails[0].imageTags' \
+              --output json | jq -r '.[] | select(. != "latest")')
+            echo "Using VERSION_TAG from latest image: $VERSION_TAG"
+          fi
+          
           IMAGE_URI="${REGISTRY}:${VERSION_TAG}"
           echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
       
