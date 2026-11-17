@@ -11,7 +11,7 @@ sns = boto3.client("sns")
 
 TOPIC_ARN = os.environ["SNS_TOPIC_ARN"]
 DB_INSTANCE_ARN = os.environ["DB_INSTANCE_ARN"]
-ENV = os.environ["ENV"]
+ENV = os.environ["ENV"].upper()
 
 def notify(subject, message):
     sns.publish(
