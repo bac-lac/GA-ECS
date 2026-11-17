@@ -65,7 +65,8 @@ resource "aws_lambda_function" "rds_maintenance" {
   environment {
     variables = {
       DB_INSTANCE_ARN  = aws_db_instance.ga_mysql.arn
-      SNS_TOPIC_ARN   = aws_sns_topic.rds_maintenance.arn
+      SNS_TOPIC_ARN    = aws_sns_topic.rds_maintenance.arn
+      ENV              = var.ENV
     }
   }
   tracing_config {

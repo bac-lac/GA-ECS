@@ -11,7 +11,7 @@ sns = boto3.client("sns")
 
 TOPIC_ARN = os.environ["SNS_TOPIC_ARN"]
 DB_INSTANCE_ARN = os.environ["DB_INSTANCE_ARN"]
-
+ENV = os.environ["ENV"]
 
 def notify(subject, message):
     sns.publish(
@@ -50,7 +50,7 @@ def lambda_handler(event, context):
                     }
 
                     notify(
-                        "RDS Maintenance Scheduled",
+                        f" {ENV} - RDS Maintenance Scheduled",
                         message
                     )
 
@@ -62,7 +62,7 @@ def lambda_handler(event, context):
         }
 
         notify(
-            "RDS Maintenance Check Complete",
+            f" {ENV} - RDS Maintenance Check Complete",
             message
         )
 
@@ -77,7 +77,7 @@ def lambda_handler(event, context):
         }
 
         notify(
-            "RDS Maintenance Failure",
+            f" {ENV} - RDS Maintenance Failure",
             error
         )
 
